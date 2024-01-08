@@ -324,7 +324,6 @@ void ui_update_params(UIState *s) {
   scene.road_edge_width = params.getInt("RoadEdgesWidth") * (scene.is_metric ? 1 : INCH_TO_CM) / 200;
   scene.unlimited_road_ui_length = scene.model_ui && params.getBool("UnlimitedLength");
 
-  scene.mute_dm = params.getBool("FireTheBabysitter") && params.getBool("MuteDM");
   scene.personalities_via_screen = (params.getInt("AdjustablePersonalities") == 2 || params.getInt("AdjustablePersonalities") == 3);
   scene.rotating_wheel = params.getBool("RotatingWheel");
   scene.speed_limit_controller = params.getBool("SpeedLimitController");
