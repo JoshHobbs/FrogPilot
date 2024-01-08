@@ -24,7 +24,6 @@ private:
 
   std::set<QString> conditionalExperimentalKeys;
   std::set<QString> customPersonalitiesKeys;
-  std::set<QString> fireTheBabysitterKeys;
   std::set<QString> laneChangeKeys;
   std::set<QString> lateralTuneKeys;
   std::set<QString> longitudinalTuneKeys;
