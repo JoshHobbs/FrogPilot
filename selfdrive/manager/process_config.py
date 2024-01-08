@@ -45,15 +45,15 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
 
 # FrogPilot functions
 def allow_uploads(started, params, CP: car.CarParams) -> bool:
-  enable_logging = not (params.get_bool("FireTheBabysitter") and params.get_bool("NoLogging"))
+  enable_logging = not (params.get_bool("NoLogging"))
   wifi_connected = HARDWARE.get_network_type() == WIFI and not started
   return wifi_connected if params.get_bool("DisableOnroadUploads") else enable_logging
 
 def enable_dm(started, params, CP: car.CarParams) -> bool:
-  return (started or params.get_bool("IsDriverViewEnabled")) and not (params.get_bool("FireTheBabysitter") and params.get_bool("MuteDM"))
+  return (started or params.get_bool("IsDriverViewEnabled"))
 
 def enable_logging(started, params, CP: car.CarParams) -> bool:
-  return not (params.get_bool("FireTheBabysitter") and params.get_bool("NoLogging"))
+  return not (params.get_bool("NoLogging"))
 
 def not_prime(started, params, CP: car.CarParams) -> bool:
   return params.get_int("PrimeType") == 0
