@@ -30,12 +30,7 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWid
     {"DeviceShutdown", "Device Shutdown Timer", "Configure the timer for automatic device shutdown when offroad conserving energy and preventing battery drain.", "../frogpilot/assets/toggle_icons/icon_time.png"},
     {"ExperimentalModeViaPress", "Experimental Mode Via 'LKAS' Button / Screen", "Toggle Experimental Mode by double-clicking the 'Lane Departure'/'LKAS' button or double tapping screen.\n\nOverrides 'Conditional Experimental Mode'.", "../assets/img_experimental_white.svg"},
 
-    {"FireTheBabysitter", "Fire the Babysitter", "Deactivate some of openpilot's 'Babysitter' protocols for more user autonomy.", "../frogpilot/assets/toggle_icons/icon_babysitter.png"},
     {"NoLogging", "Disable All Logging", "Turn off all data tracking to enhance privacy or reduce thermal load.\n\nWARNING: This action will prevent drive recording and data cannot be recovered!", ""},
-    {"MuteDM", "Mute Driver Monitoring", "Disable driver monitoring.", ""},
-    {"MuteDoor", "Mute Door Open Alert", "Disable alerts for open doors.", ""},
-    {"MuteOverheated", "Mute Overheated System Alert", "Disable alerts for the device being overheated.", ""},
-    {"MuteSeatbelt", "Mute Seatbelt Unlatched Alert", "Disable alerts for unlatched seatbelts.", ""},
 
     {"LateralTune", "Lateral Tuning", "Modify openpilot's steering behavior.", "../frogpilot/assets/toggle_icons/icon_lateral_tune.png"},
     {"AverageCurvature", "Average Desired Curvature", "Use Pfeiferj's distance-based curvature adjustment for improved curve handling.", ""},
@@ -128,16 +123,7 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWid
         shutdownLabels[i] = i == 0 ? "Instant" : i <= 3 ? QString::number(i * 15) + " mins" : QString::number(i - 3) + (i == 4 ? " hour" : " hours");
       }
       toggle = new ParamValueControl(param, title, desc, icon, 0, 33, shutdownLabels, this, false);
-
-    } else if (param == "FireTheBabysitter") {
-      ParamManageControl *fireTheBabysitterToggle = new ParamManageControl(param, title, desc, icon, this);
-      QObject::connect(fireTheBabysitterToggle, &ParamManageControl::manageButtonClicked, this, [this]() {
-        parentToggleClicked();
-        for (auto &[key, toggle] : toggles) {
-          toggle->setVisible(fireTheBabysitterKeys.find(key.c_str()) != fireTheBabysitterKeys.end());
-        }
-      });
-      toggle = fireTheBabysitterToggle;
+      
 
     } else if (param == "LateralTune") {
       ParamManageControl *lateralTuneToggle = new ParamManageControl(param, title, desc, icon, this);
@@ -324,7 +310,6 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWid
 
   conditionalExperimentalKeys = {"CECurves", "CECurvesLead", "CESlowerLead", "CENavigation", "CEStopLights", "CESignal"};
   customPersonalitiesKeys = {"AggressiveFollow", "AggressiveJerk", "StandardFollow", "StandardJerk", "RelaxedFollow", "RelaxedJerk"};
-  fireTheBabysitterKeys = {"NoLogging", "MuteDM", "MuteDoor", "MuteOverheated", "MuteSeatbelt"};
   laneChangeKeys = {"LaneChangeTime", "LaneDetection", "OneLaneChange", "PauseLateralOnSignal"};
   lateralTuneKeys = {"AverageCurvature", "NNFF"};
   longitudinalTuneKeys = {"AccelerationProfile", "AggressiveAcceleration", "SmoothBraking", "StoppingDistance"};
@@ -337,7 +322,7 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWid
     }
   });
 
-  std::set<std::string> rebootKeys = {"AlwaysOnLateral", "AlwaysOnLateralMain", "FireTheBabysitter", "NoLogging", "MuteDM", "NNFF"};
+  std::set<std::string> rebootKeys = {"AlwaysOnLateral", "AlwaysOnLateralMain", "NoLogging", "NNFF"};
   for (const std::string &key : rebootKeys) {
     QObject::connect(toggles[key], &ToggleControl::toggleFlipped, [parent]() {
       if (ConfirmationDialog::toggle("Reboot required to take effect.", "Reboot Now", parent)) {
@@ -451,7 +436,6 @@ void FrogPilotControlsPanel::hideSubToggles() {
   for (auto &[key, toggle] : toggles) {
     const bool subToggles = conditionalExperimentalKeys.find(key.c_str()) != conditionalExperimentalKeys.end() ||
                             customPersonalitiesKeys.find(key.c_str()) != customPersonalitiesKeys.end() ||
-                            fireTheBabysitterKeys.find(key.c_str()) != fireTheBabysitterKeys.end() ||
                             laneChangeKeys.find(key.c_str()) != laneChangeKeys.end() ||
                             lateralTuneKeys.find(key.c_str()) != lateralTuneKeys.end() ||
                             longitudinalTuneKeys.find(key.c_str()) != longitudinalTuneKeys.end() ||
@@ -494,16 +478,11 @@ void FrogPilotControlsPanel::setDefaults() {
     {"CustomPersonalities", "1"},
     {"DeviceShutdown", "9"},
     {"ExperimentalModeViaPress", "1"},
-    {"FireTheBabysitter", FrogsGoMoo ? "1" : "0"},
     {"LaneChangeTime", "0"},
     {"LaneDetection", "1"},
     {"LateralTune", "1"},
     {"LongitudinalTune", "1"},
     {"MTSCEnabled", "1"},
-    {"MuteDM", FrogsGoMoo ? "1" : "0"},
-    {"MuteDoor", FrogsGoMoo ? "1" : "0"},
-    {"MuteOverheated", FrogsGoMoo ? "1" : "0"},
-    {"MuteSeatbelt", FrogsGoMoo ? "1" : "0"},
     {"NNFF", FrogsGoMoo ? "1" : "0"},
     {"NudgelessLaneChange", "1"},
     {"Offset1", "5"},
