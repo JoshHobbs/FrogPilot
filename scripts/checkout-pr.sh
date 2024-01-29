@@ -2,7 +2,7 @@
 set -e
 
 if [ $# -eq 0 ]; then
-  echo "usage: $0 <pull-request-number>"
+  echo "usage: $0 <pull-request-url>"
   exit 1
 fi
 
