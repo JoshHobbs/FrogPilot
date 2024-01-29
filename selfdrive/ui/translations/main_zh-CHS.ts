@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>Hidden Network</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏网络</translation>
     </message>
     <message>
         <source>CONNECT</source>
@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>Enter SSID</source>
-        <translation type="unfinished">输入SSID</translation>
+        <translation>输入WiFi名称</translation>
     </message>
     <message>
         <source>Enter password</source>
