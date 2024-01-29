@@ -84,3 +84,12 @@ if [ "$(uname)" != "Darwin" ]; then
     fi
   done
 fi
+echo "pre-commit hooks install..."
+shopt -s nullglob
+for f in .pre-commit-config.yaml */.pre-commit-config.yaml; do
+  if [ -e "$ROOT/$(dirname $f)/.git" ]; then
+    $RUN pre-commit install -c "$f"
+  fi
+done
+# Add the following line
+$RUN pre-commit install -t pre-commit
