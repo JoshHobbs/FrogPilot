@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+# Changes made for authentication token
+from openpilot.tools.lib.auth_config import set_token, get_token
 Usage::
 
   usage: auth.py [-h] [{google,apple,github,jwt}] [jwt]
@@ -81,7 +83,7 @@ def auth_redirect_link(method):
     return 'https://accounts.google.com/o/oauth2/auth?' + urlencode(params)
   elif method == 'github':
     params.update({
-      'client_id': '28c4ecb54bb7272cb5a4',
+      'client_id': 'YOUR_CLIENT_ID',
       'scope': 'read:user',
     })
     return 'https://github.com/login/oauth/authorize?' + urlencode(params)
@@ -130,7 +132,7 @@ if __name__ == '__main__':
   if args.method == 'jwt':
     if args.jwt is None:
       print("method JWT selected, but no JWT was provided")
-      exit(1)
+      sys.exit(1)
 
     set_token(args.jwt)
   else:
