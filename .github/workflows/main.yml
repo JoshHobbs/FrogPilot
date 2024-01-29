@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run linter
+        run: pre-commit run --all
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update Python packages and pre-commit hooks
+          title: Update Python packages and pre-commit hooks
+          branch: auto-package-updates
+          base: master
+          delete-branch: true
+          body: Automatic PR from repo-maintenance -> package_updates
+          committer: GitHub <noreply@github.com>
+          author: JoshHobbs <JoshHobbs@users.noreply.github.com>
+          signoff: false
+          draft: false
